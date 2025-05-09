@@ -9,9 +9,9 @@ const PORT = process.env.PORT || 3000;
 
 // CORS configuration to allow only your frontend origin
 const corsOptions = {
-  origin: 'http://localhost:3001',  // Replace with the correct frontend URL
+  origin: ['http://localhost:3000','https://samarth0809.github.io'],  // Replace with the correct frontend URL
   methods: 'GET,POST',
-  allowedHeaders: 'Content-Type,Authorization',
+  allowedHeaders: ['Content-Type,Authorization'],
 };
 
 app.use(cors(corsOptions));
