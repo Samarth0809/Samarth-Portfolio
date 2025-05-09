@@ -10,7 +10,7 @@ document.body.appendChild(script);
 
 let header = $(`
 <nav class="navbar navbar-expand-lg fixed-top dark-theme" id="navbar">
-<a class="navbar-brand" href="index.html">David Simoes </a>
+<a class="navbar-brand" href="index.html">Samarth Jagakar </a>
 <div class="hamburger_wrapper navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 
   <div id="js-hamburger" class="hamburger">
@@ -118,7 +118,10 @@ let footer = $(`
       <!--SVG code for quote-left icon-->
       <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" width="1.5em" height="1.5em" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path d="M7 21a4 4 0 0 1-4-4c0-1.473 1.333-6.14 4-14h2L7 13a4 4 0 1 1 0 8zm10 0a4 4 0 0 1-4-4c0-1.473 1.333-6.14 4-14h2l-2 10a4 4 0 1 1 0 8z" fill="#fff" fill-rule="evenodd"/></svg>
       </div>
-      <p class="tag" >We can do a better world, learning and sharing knowledge</p>
+      <p class="tag" >Aspiring Web Developer with strong skills in HTML, CSS, JavaScript, and jQuery, seeking to contribute to
+marketing operations through effective Email Development and Web Development. Passionate about creating
+accessible, responsive digital experiences that enhance user engagement through modern front-end solutions and
+Digital Marketing, leveraging Content Services for impactful campaigns.</p>
     </div>
 
     
@@ -216,7 +219,7 @@ let footer = $(`
     </svg>
     </a>
 
-    <a class="social-button linkedin" href="https://www.linkedin.com/in/david-sim%C3%B5es-49559220/?locale=en_US" target="_blank" >
+    <a class="social-button linkedin" href="https://www.linkedin.com/in/samarth-jagakar/" target="_blank" >
     <!-- svg code for linkedin icon -->
       <svg class="linkedin-icon-footer" xmlns="http://www.w3.org/2000/svg" width="35" viewBox="0 0 24 24" fill="#0e76a8"
         stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather feather-linkedin">
@@ -239,7 +242,7 @@ let footer = $(`
       </svg>
     </a>
 
-    <a class="social-button github" href="https://github.com/DaveSimoes/DaveSimoes" target="_blank">
+    <a class="social-button github" href="https://github.com/Samarth0809" target="_blank">
     <!-- SVG code for Github icon -->
     <svg class="github-icon-footer" width="45px" height="45px" viewBox="0 0 300 300">
         <!-- body -->
@@ -440,42 +443,66 @@ $(window).on("load", function () {
 
 
 $(function submitAnimation() {
-  const name = document.querySelector("#name")
-  const emailAdress = document.querySelector("#email")
-  const text = document.querySelector("#textArea")
+  const name = document.querySelector("#name");
+  const emailAdress = document.querySelector("#email");
+  const text = document.querySelector("#textArea");
   const emailPattern = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
 
-  $("#lnch").on("click", function () {
+  $("#lnch").on("click", function (event) {
+    event.preventDefault(); // Prevent default form submission
 
     // Check if the name field is empty or contains a number
     if (name.value == "" || (/\d/.test(name.value))) {
-      swal("Error !","Please enter a valid name !","error");
+      swal("Error!", "Please enter a valid name!", "error");
       return;
     }
     // Check if the email field is empty or email is not valid ex: test@@email.com
     else if (emailAdress.value == "" || !(emailPattern.test(emailAdress.value))) {
-      swal("Error !","Please enter a valid email !","error");
+      swal("Error!", "Please enter a valid email!", "error");
       return;
     }
     // Check if the message field is empty
     else if (text.value == "") {
-      swal("Error !","Please enter a valid message !","error");
+      swal("Error!", "Please enter a valid message!", "error");
       return;
-    }
-    else {
-
+    } else {
+      // Animation for sending
       setTimeout(function () {
         $("#lnch").addClass("launching").text("Sending");
-        $("#lnch_btn").addClass("launching");
       }, 0);
+
       setTimeout(function () {
         $("#lnch").addClass("launched").text("SENT");
-        $("#lnch_btn").addClass("launched");
       }, 1500);
-      // Wait for 2.2 seconds so that the send button animation can be fully played before submitting the form
+
+      // Wait for 2.2 seconds for the animation to complete
       setTimeout(() => {
-        document.querySelector('form').submit();
-      }, 2200);
+        const formData = {
+          name: name.value,
+          email: emailAdress.value,
+          message: text.value
+        };
+
+        // Send data using fetch (AJAX)
+        fetch('https://samarth-portfolio-c3vc.onrender.com/submit-form', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData),
+        })
+          .then(response => response.json())
+          .then(data => {
+            if (data.message === 'Email sent successfully') {
+              swal('Success!', 'Your message has been sent!', 'success');
+            } else {
+              swal('Error!', 'Something went wrong. Please try again later.', 'error');
+            }
+          })
+          .catch(error => {
+            swal('Error!', 'Something went wrong. Please try again later.', 'error');
+          });
+      }, 2200); // Delay form submission for animation
     }
   });
 });
